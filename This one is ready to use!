@@ -1,0 +1,83 @@
+import random
+
+# Expanded lists of names
+male_first_names = ["Arin", "Brynn", "Cale", "Dara", "Elric", "Fay", "Gavin", "Hale", "Ivor", "Jor", "Kane", "Liam", "Marek", "Nyle", "Owen", "Pike", "Quin", "Reed", "Soren", "Talon", "Uther", "Vance", "Wade", "Xander", "Yorick", "Zane", "Alexander", "Scott"]
+female_first_names = ["Aria", "Brynn", "Cora", "Dara", "Elena", "Faye", "Gwen", "Hara", "Iris", "Jade", "Kara", "Lara", "Maeve", "Nina", "Opal", "Pia", "Quinn", "Rose", "Sara", "Tara", "Ula", "Vera", "Wyn", "Xena", "Yara", "Zara", "Frances", "Lydia", "Violet"]
+last_names = ["Brightwood", "Ironfist", "Stormwind", "Silverleaf", "Swanson", "Darkwood", "Shadowalker", "Fireforge", "Frostblade", "Windrider", "Stonehammer", "Ravenclaw", "Stormbreaker", "Moonshadow", "Duskblade", "Lightbringer"]
+
+# Possible options for each character attribute
+races_classes = {
+    "Human": ["Fighter", "Mage", "Cleric", "Thief", "Paladin", "Ranger", "Bard", "Druid", "Monk", "Sorcerer", "Barbarian"],
+    "Elf": ["Fighter", "Mage", "Cleric", "Thief", "Ranger", "Druid", "Monk", "Sorcerer"],
+    "Half-Elf": ["Fighter", "Mage", "Cleric", "Thief", "Paladin", "Ranger", "Bard", "Druid", "Monk", "Sorcerer"],
+    "Dwarf": ["Fighter", "Cleric", "Thief", "Barbarian"],
+    "Halfling": ["Fighter", "Cleric", "Thief"],
+    "Gnome": ["Mage", "Cleric", "Thief"],
+    "Half-Orc": ["Fighter", "Cleric", "Thief", "Barbarian"]
+}
+alignments = ["Lawful Good", "Neutral Good", "Chaotic Good", "Lawful Neutral", "True Neutral", "Chaotic Neutral", "Lawful Evil", "Neutral Evil", "Chaotic Evil"]
+
+skills = ["Acrobatics", "Animal Handling", "Arcana", "Athletics", "Deception", "History", "Insight", "Intimidation", "Investigation", "Medicine", "Nature", "Perception", "Performance", "Persuasion", "Religion", "Sleight of Hand", "Stealth", "Survival"]
+
+def roll_ability_scores():
+    return sum(sorted(random.choices(range(1, 7), k=4))[1:])
+
+def generate_name():
+    gender = random.choice(["male", "female"])
+    first_name = random.choice(male_first_names if gender == "male" else female_first_names)
+    last_name = random.choice(last_names)
+    return f"{first_name} {last_name}"
+
+def generate_backstory(character):
+    name = character["Name"]
+    race = character["Race"]
+    char_class = character["Class"]
+    alignment = character["Alignment"]
+    
+    backstories = [
+        f"{name} grew up in Candlekeep, raised by the wise sage Gorion. From a young age, {name} showed an aptitude for {char_class.lower()} skills, often spending hours in study and practice. The tranquil life in the keep was shattered one fateful night when Gorion revealed their true heritage and the danger that pursued them. Forced to flee, {name} embarked on a journey filled with peril and discovery. Along the Sword Coast, they forged alliances and faced adversaries, each encounter shaping them into the {char_class.lower()} they are today. Now, {name} seeks answers about their lineage and the dark forces that threaten the realms.",
+        f"Born in the elven city of Suldanessellar, {name} always felt a deep connection to nature and magic. Trained as a {char_class.lower()}, they honed their skills under the guidance of the elven elders. However, a vision of a looming darkness compelled {name} to leave their homeland and embark on a quest for truth. Venturing beyond the boundaries of their forest sanctuary, {name} navigated the complexities of elven politics and encountered ancient beings who imparted arcane wisdom. Each revelation brought them closer to understanding their prophetic dreams and the role they must play in the fate of the world.",
+        f"{name} was raised in the bustling streets of Baldur's Gate, where survival often depended on quick wit and even quicker reflexes. Gifted with a natural talent for {char_class.lower()} skills, {name} earned a reputation as a resourceful adventurer. Their journey from the lower city to the upper echelons of Baldurian society was marked by daring heists, political intrigue, and unexpected alliances. Yet, beneath the veneer of wealth and power lies a deeper quest for meaning and identity. {name} seeks to uncover the truth about their mysterious past, a quest that takes them across Faerûn in search of ancient relics and forgotten lore.",
+        f"{name} grew up among the clans of the Sunset Mountains, where strength and honor were paramount virtues. Trained in the ways of the {char_class.lower()}, {name} quickly rose through the ranks as a formidable warrior. However, a betrayal within their clan forced {name} into exile, wandering the harsh wilderness in search of redemption. Along their journey, {name} encountered spirits of the land and ancestral guardians who imparted ancient knowledge. With each challenge overcome, they grew stronger in spirit and resolve. Now, {name} seeks to reclaim their honor and confront the traitor who brought shame upon their clan.",
+        f"Raised in the bustling city of Waterdeep, {name} learned early on that survival often required cunning and adaptability. Trained in the arts of {char_class.lower()}, they navigated the labyrinthine streets and shadowy alleys of the city with ease. Their expertise in {skills[0]}, {skills[1]}, and {skills[2]} earned them a reputation as a skilled {char_class.lower()} for hire. However, beneath their roguish exterior lies a sense of loyalty to those they consider family. {name} seeks to uncover the truth behind a mysterious contract that binds their fate to a powerful entity, unraveling a web of deceit that spans across the realms.",
+        f"{name} was born into nobility in the kingdom of Amn, where privilege came with expectations of duty and honor. Trained from a young age in {char_class.lower()} skills, they excelled in both the arts of combat and diplomacy. Yet, a political scandal threatened to tarnish their family's reputation, forcing {name} into exile. Traveling across the Sword Coast, they honed their skills as a mercenary, seeking redemption through acts of heroism. Along the way, {name} uncovered a conspiracy that threatens to destabilize the region, prompting them to confront their past and forge a new path as a champion of justice.",
+        f"{name} spent their formative years as a ward of the Zhentarim, where survival depended on loyalty and obedience. Trained in the clandestine arts of {char_class.lower()}, they rose through the ranks as an elite operative. However, a mission gone awry led to their disavowal by the organization, forcing {name} to navigate the treacherous underworld of Waterdeep alone. Their quest for redemption is driven by a desire to expose corruption within the ranks of the Zhentarim and restore their honor. Armed with {skills[0]}, {skills[1]}, and {skills[2]}, {name} seeks to uncover the truth behind a shadowy conspiracy that threatens to plunge the city into chaos.",
+        f"Born into a nomadic tribe on the outskirts of Baldur's Gate, {name} learned the ways of the {char_class.lower()} from their elders. Their bond with nature and {skills[0]} made them an invaluable scout and protector of their people. However, a vision of a coming apocalypse compelled {name} to leave their tribe and embark on a quest for ancient artifacts that could avert disaster. Their journey takes them across the Sword Coast, where they confront rival factions and ancient evils. Along the way, {name} discovers hidden powers within themselves and forges alliances with unlikely allies. Now, {name} stands as a beacon of hope in the face of impending doom, determined to safeguard their homeland and the world beyond.",
+        f"{name} was born into slavery in the city of Baldur's Gate, where survival meant enduring cruelty and oppression. Trained in the {char_class.lower()} skills of stealth and {skills[0]}, they escaped their captors and sought refuge among the underground network of rebels. Their quest for freedom is intertwined with a desire for justice, as {name} seeks to dismantle the slave trade that thrives within the city's shadows. Along their journey, they uncover dark secrets that implicate powerful figures in the corruption plaguing Baldur's Gate. Armed with {skills[1]} and {skills[2]}, {name} vows to bring about a new era of equality and liberation for all oppressed peoples.",
+        f"{name} grew up in the remote village of Candlekeep, surrounded by ancient tomes and scholarly wisdom. Trained in the arcane arts of {char_class.lower()}, they exhibited a natural talent for magic from a young age. Their insatiable curiosity led them on a journey of discovery across Faerûn, seeking lost artifacts and unraveling arcane mysteries. Along the way, {name} encountered beings of immense power who bestowed upon them forbidden knowledge. Now, they are haunted by visions of a cataclysmic event that threatens to reshape the world. Armed with {skills[0]} and {skills[1]}, {name} must uncover the truth behind their visions and prevent the impending disaster."
+    ]
+    return random.choice(backstories) + f" They are a {alignment.lower()} {race.lower()}."
+
+def generate_character():
+    race = random.choice(list(races_classes.keys()))
+    char_class = random.choice(races_classes[race])
+    alignment = random.choice(alignments)
+    name = generate_name()
+    
+    character = {
+        "Name": name,
+        "Race": race,
+        "Class": char_class,
+        "Alignment": alignment,
+        "Strength": roll_ability_scores(),
+        "Dexterity": roll_ability_scores(),
+        "Constitution": roll_ability_scores(),
+        "Intelligence": roll_ability_scores(),
+        "Wisdom": roll_ability_scores(),
+        "Charisma": roll_ability_scores(),
+        "Skills": random.sample(skills, 3),
+        "Backstory": generate_backstory({
+            "Name": name,
+            "Race": race,
+            "Class": char_class,
+            "Alignment": alignment
+        })
+    }
+    return character
+
+# Generate and print a character
+character = generate_character()
+for attribute, value in character.items():
+    print(f"{attribute}: {value}")
+
+
